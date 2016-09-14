@@ -177,7 +177,7 @@ open class JSONDecoder {
         if let data = rawObject as? Data {
             var response: AnyObject?
             do {
-                try response = JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions())
+                try response = JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as AnyObject
                 rawObject = response!
             }
             catch let error as NSError {
@@ -185,7 +185,7 @@ open class JSONDecoder {
                 return
             }
         }
-        if let array = rawObject as? NSArray {
+        if let array = rawObject as? [AnyObject] {
             var collect = [JSONDecoder]()
             for val: AnyObject in array {
                 collect.append(JSONDecoder(val, isSub: true))
@@ -215,7 +215,7 @@ open class JSONDecoder {
     ///Dictionary access support
     open subscript(key: String) -> JSONDecoder {
         get {
-            if let dict = self.value as? NSDictionary {
+            if let dict = self.value as? [String:AnyObject] {
                 if let value: AnyObject = dict[key] {
                     return value as! JSONDecoder
                 }
